@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   constructor() {}
+
+  // public sendTestData(){
+  //   let data = {test: "yees"};
+  //   this.http.post('http://localhost:8080/api/test', data)
+  //   .subscribe((resuslt)=>{
+  //     console.warn(resuslt)
+  //   })
+  // }
 }
