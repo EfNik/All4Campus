@@ -17,18 +17,21 @@ export class LoginPage implements OnInit {
   Email: string;
   Password: string;
 
-  
-  testFun() {
-      console.log(this.Email);
-      console.log(this.Password);
+
+  sendData(){
+    let headers = new Headers();
+    headers.append('Content-Type','application/json');
+
+    let body = {
+      email: this.Email,
+      password: this.Password
+    };
+
+    this.http.post("http://192.168.1.2:8080/api/test",body).subscribe(data =>{
+      console.log(data);
+    });
+    
   }
-
-  // email: string= '';
-  
-  // test(){
-  //   console.log(email);
-  // }
-
   
 
   // sendTestData(){
