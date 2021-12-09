@@ -12,17 +12,22 @@
 <form>
   <ion-list>
     <ion-item>
-      <ion-label position="stacked">Username</ion-label>
-      <ion-input autocomplete="off" type="text" name="username" ></ion-input>
+      <ion-label position="stacked">First name</ion-label>
+      <ion-input autocomplete="off" type="text" name="firstname" [(ngModel)]="firstname"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Last name</ion-label>
+      <ion-input autocomplete="off" type="text" name="lastname" [(ngModel)]="lastname" ></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Email</ion-label>
-      <ion-input autocomplete="off" type="password" name="email" ></ion-input>
+      <ion-input autocomplete="off" type="email" [(ngModel)]="Email" name="email" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Password</ion-label>
-      <ion-input autocomplete="off" type="text" name="username" ></ion-input>
+      <ion-input autocomplete="off" type="password" [(ngModel)]="passsword" name="password" ></ion-input>
     </ion-item>
 
     <ion-item lines='none'>
@@ -30,7 +35,7 @@
     </ion-item>
 
   </ion-list>
-  <ion-button expand="block" share="round" color="warning" >Register</ion-button>
+  <ion-button expand="block" share="round" color="warning" (click)="sendRegistration()">Register</ion-button>
 </form>
   
 </ion-content>
