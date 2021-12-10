@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as Leaflet from 'leaflet';
 import "leaflet/dist/leaflet.css";
-
+import { HttpClient } from '@angular/common/http';
 
 
 
@@ -20,8 +20,19 @@ export class MapPage  {
  
 
   constructor( 
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
+    public http:HttpClient
   ){}
+
+  ngOnInit() {
+    this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data =>{
+      console.log(data);
+    });
+  }
+
+
+
+
 ionViewDidEnter(){
 
   this.showMap();
