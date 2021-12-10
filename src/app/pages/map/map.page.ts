@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import {Map,tileLayer,marker,polyline} from 'leaflet';
 import * as Leaflet from 'leaflet';
 import "leaflet/dist/leaflet.css";
 
@@ -14,7 +13,7 @@ import "leaflet/dist/leaflet.css";
 })
 export class MapPage  {
   map: Leaflet.Map;
- 
+  status;
   latlong=[];
   properties=[];
 
@@ -24,10 +23,18 @@ export class MapPage  {
     private geolocation: Geolocation
   ){}
 ionViewDidEnter(){
+
   this.showMap();
   
-  //Exoume ta 3 ikonidia edw analoga to status tha ta kaloume
-  
+  fetch('./assets/markers.json')
+    .then(res=>res.json())
+    .then(data=>{
+      this.properties=data.markers;
+
+//for loop to take our data
+
+for(const marker of this.properties){
+
   var greenIcon = new Leaflet.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -54,16 +61,37 @@ ionViewDidEnter(){
   });
   
   
+ //we are changing markers colour depending on the stautus of our sensors
 
+ var latlng=[marker.latitude, marker.longitude]
+    
+      //check the marker's status and set a this status in order to change the icon
 
-  Leaflet.marker([38.29034, 21.787147],{icon:greenIcon}).addTo(this.map);
-  Leaflet.marker([38.29014, 21.787147],{icon:yellowIcon}).addTo(this.map);
-  Leaflet.marker([38.29054, 21.787137],{icon:redIcon}).addTo(this.map);
-  
-  
+  if(marker.status==0){
+        this.status=greenIcon;
+      }
+  if(marker.status==1){
+        this.status=yellowIcon; 
+      }
+  else{
+
+        this.status=redIcon;
+      }
+  Leaflet.marker([marker.latitude, marker.longitude], {icon:this.status}).addTo(this.map)
+  .bindPopup("Status"+ marker.status+"<br>"+"Last checked time: "+marker.time);
+      
+
+  //!--dont check--!originally displaying some markers in order to test the visual
+  //Leaflet.marker([38.29034, 21.787147],{icon:greenIcon}).addTo(this.map);
+  //Leaflet.marker([38.29014, 21.787147],{icon:yellowIcon}).addTo(this.map);
+  //Leaflet.marker([38.29054, 21.787137],{icon:redIcon}).addTo(this.map);
   
   
 }
+})
+  
+}
+  //function showMap we have a general zoom around the space of university of Patras
   showMap() {
     this.map = new Leaflet.Map('mapId').setView([38.290014, 21.787147],15);
     Leaflet.tileLayer('https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=4MmzHCgC720WufGIKa3v', {
