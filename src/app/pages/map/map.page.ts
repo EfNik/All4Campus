@@ -3,61 +3,114 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {Map,tileLayer,marker,polyline} from 'leaflet';
 import * as Leaflet from 'leaflet';
 import "leaflet/dist/leaflet.css";
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import * as internal from 'stream';
+
+
+
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage  {
+export class MapPage implements OnInit{
   map: Leaflet.Map;
   marker:any;
   latlong=[];
   properties=[];
+  status;
 
- 
+  //fortosi dedomenwn apo server 
+  ngOnInit() {
+    this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data =>{
+      console.log(data);
+    });
+  }
+  
+  //arxikopoihsh gia ta keys tou sensor
+  
+    Type:String;
+    Status: internal;
+    Longitude:DoubleRange;
+    Latitude:DoubleRange;
 
   constructor( 
+    
     private geolocation: Geolocation,
-    private router: Router
+    public http:HttpClient
   ){}
 
-  ngOnInit() {
-    if(!!localStorage.getItem('token')){
-      return true
+ionViewDidEnter(){
+  //o xartis xwris tipota topothesia kai zoom
+  
+  this.map = new Leaflet.Map('mapId').setView([38.290014, 21.787147],15);
+  Leaflet.tileLayer('https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=4MmzHCgC720WufGIKa3v').addTo(this.map);
+  
+//edw prospathw na orisw ta keys
+  
+    let headers = new Headers();
+    headers.append('Content-Type','sensors/json');
+
+    let body = {
+      status: this.Status,
+      type: this.Type,
+      longitude: this.Longitude,
+      latitude: this.Latitude
+    }
+    
+    //akolouthoun ta 3 diaforetika icons prasino,kitrino,kokkino 
+    
+    var greenIcon = new Leaflet.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [10, 21],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    var yellowIcon = new Leaflet.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [10, 21],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    var redIcon = new Leaflet.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [10, 21],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+   //edw einai to thema mou me thn for loop pou prepei na ginei sto server wste na elegxei to status an einai 0,1h kati diaforetiko 
+  
+    data.forEach(obj => {
+      Object.entries(obj).forEach(([key, value]) => {
+        console.log(`${key} ${value}`);
+      });
+    if(marker.status=0){
+      this.status=greenIcon;
+    }
+    if(marker.status=1){
+      this.status=yellowIcon; 
     }
     else{
-      
-      this.router.navigate(["../login"])
-      return false
+
+      this.status=redIcon;
     }
+      
+    //kanonika an etrexe kanonika ftanoume sto teleutaio bhma edw opou to mono pou xreiazetai einai na parei to latitude kai longitude tou sensor kai analoga to 
+     //stauts tou na dwsei to icon pou theloume epishs exw balei popup gia to ti typos einai rampa h asanser
+      
+    Leaflet.marker([marker.latitude, marker.longitude],{icon:this.status}).addTo(this.map)
+    .bindPopup("Type"+ marker.type);
+  
   }
+                 }
 
-ionViewDidEnter(){
-  this.showMap();
-  this.showMarker([38.290014, 21.787147],{icon: greenIcon});
-
-  var greenIcon = Leaflet.icon({
-    iconUrl: 'leaf-green.png',
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-}
-  showMap() {
-    this.map = new Leaflet.Map('mapId').setView([38.290014, 21.787147],15);
-    Leaflet.tileLayer('https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=4MmzHCgC720WufGIKa3v').addTo(this.map);
-
-  }
-  showMarker(latlong,{icon: greenIcon}){
-    this.marker=Leaflet.marker(latlong);
-    this.marker.addTo(this.map)
-    .bindPopup('Sensor');
-    
-
-  }
+  
   
 }
