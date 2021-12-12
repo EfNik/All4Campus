@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact',
@@ -8,17 +7,13 @@ import { Router } from '@angular/router';
 })
 export class ContactPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor() { }
 
-  ngOnInit() {
-    if(!!localStorage.getItem('token')){
-      return true
-    }
-    else{
-      
-      this.router.navigate(["../login"])
-      return false
-    }
+  ngOnInit() {}
+    sendData(){
+      console.log("sendreport")
+     }
   }
 
-}
+
+
