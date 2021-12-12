@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {Map,tileLayer,marker,polyline} from 'leaflet';
 import * as Leaflet from 'leaflet';
 import "leaflet/dist/leaflet.css";
-import { HttpClient } from '@angular/common/http';
-
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -13,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MapPage  {
   map: Leaflet.Map;
-  status;
+  marker:any;
   latlong=[];
   properties=[];
 
@@ -21,96 +20,44 @@ export class MapPage  {
 
   constructor( 
     private geolocation: Geolocation,
-    public http:HttpClient
+    private router: Router
   ){}
 
   ngOnInit() {
-    this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data =>{
-      console.log(data);
-    });
+    if(!!localStorage.getItem('token')){
+      return true
+    }
+    else{
+      
+      this.router.navigate(["../login"])
+      return false
+    }
   }
-
-
-
 
 ionViewDidEnter(){
-
   this.showMap();
-  
-  fetch('./assets/markers.json')
-    .then(res=>res.json())
-    .then(data=>{
-      this.properties=data.markers;
+  this.showMarker([38.290014, 21.787147],{icon: greenIcon});
 
-//for loop to take our data
-
-for(const marker of this.properties){
-
-  var greenIcon = new Leaflet.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [10, 21],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });
-  var yellowIcon = new Leaflet.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [10, 21],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });
-  var redIcon = new Leaflet.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [10, 21],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });
-  
-  
- //we are changing markers colour depending on the stautus of our sensors
-
- var latlng=[marker.latitude, marker.longitude]
-    
-      //check the marker's status and set a this status in order to change the icon
-
-  if(marker.status==0){
-        this.status=greenIcon;
-      }
-  if(marker.status==1){
-        this.status=yellowIcon; 
-      }
-  else{
-
-        this.status=redIcon;
-      }
-  Leaflet.marker([marker.latitude, marker.longitude], {icon:this.status}).addTo(this.map)
-  .bindPopup("Status"+ marker.status+"<br>"+"Last checked time: "+marker.time);
-      
-
-  //!--dont check--!originally displaying some markers in order to test the visual
-  //Leaflet.marker([38.29034, 21.787147],{icon:greenIcon}).addTo(this.map);
-  //Leaflet.marker([38.29014, 21.787147],{icon:yellowIcon}).addTo(this.map);
-  //Leaflet.marker([38.29054, 21.787137],{icon:redIcon}).addTo(this.map);
-  
-  
+  var greenIcon = Leaflet.icon({
+    iconUrl: 'leaf-green.png',
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
 }
-})
-  
-}
-  //function showMap we have a general zoom around the space of university of Patras
   showMap() {
     this.map = new Leaflet.Map('mapId').setView([38.290014, 21.787147],15);
-    Leaflet.tileLayer('https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=4MmzHCgC720WufGIKa3v', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
-    
+    Leaflet.tileLayer('https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=4MmzHCgC720WufGIKa3v').addTo(this.map);
+
   }
-  
- 
+  showMarker(latlong,{icon: greenIcon}){
+    this.marker=Leaflet.marker(latlong);
+    this.marker.addTo(this.map)
+    .bindPopup('Sensor');
+    
+
+  }
   
 }

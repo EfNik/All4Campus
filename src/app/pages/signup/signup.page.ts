@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -9,9 +9,17 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SignupPage implements OnInit {
 
-  constructor(public http:HttpClient) { }
+  constructor(public http:HttpClient,private router: Router) { }
 
   ngOnInit() {
+    if(!!localStorage.getItem('token')){
+      
+      this.router.navigate(["../../home"])
+      return false
+    }
+    else{
+      return true
+    }
   }
 
   Email: string;
@@ -34,6 +42,27 @@ export class SignupPage implements OnInit {
 
     this.http.post("http://127.0.0.1:8080/api/signup",body).subscribe(data =>{
       console.log(data);
+      let status = data[Object.keys(data)[0]];
+     
+      // console.log(data[Object.keys(data)[0]]);
+      console.log(data)
+      if(status=="success")
+      {
+        // console.log("great")
+        this.router.navigate(["../login"]);
+      }
+      else{
+        //
+        let reason = data[Object.keys(data)[1]];
+        if(reason=="email")
+        {
+          alert("Email already exists")
+        }
+        else{
+          alert("An error has occured please try again later.")
+        }
+        
+      }
     });
   }
 
