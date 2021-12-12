@@ -47,17 +47,7 @@ ionViewDidEnter(){
   this.map = new Leaflet.Map('mapId').setView([38.290014, 21.787147],15);
   Leaflet.tileLayer('https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=4MmzHCgC720WufGIKa3v').addTo(this.map);
   
-//edw prospathw na orisw ta keys
-  
-    let headers = new Headers();
-    headers.append('Content-Type','sensors/json');
 
-    let body = {
-      status: this.Status,
-      type: this.Type,
-      longitude: this.Longitude,
-      latitude: this.Latitude
-    }
     
     //akolouthoun ta 3 diaforetika icons prasino,kitrino,kokkino 
     
