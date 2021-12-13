@@ -64,7 +64,7 @@ export class LoginPage implements OnInit {
       }
       else{
         localStorage.setItem('token',status);
-        this.router.navigate(["../../home"]);
+        this.router.navigate(["../../home"]); 
       }
     });
     

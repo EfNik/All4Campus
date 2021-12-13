@@ -19,6 +19,15 @@ export class HomePage implements OnInit {
       this.router.navigate(["../pages/login"])
       return false
     }
+
+  }
+
+  redirection(){
+    window.location.reload();
+  } 
+
+  testfunct(){
+    console.log("test")
   }
 
 }
