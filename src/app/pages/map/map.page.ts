@@ -4,6 +4,9 @@ import { Map, tileLayer, marker, polyline } from 'leaflet';
 import * as Leaflet from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import { HttpClient } from '@angular/common/http';
+
+import { timer } from 'rxjs';
+
 // import * as internal from 'stream';
 
 
@@ -109,16 +112,28 @@ export class MapPage implements OnInit {
     // Leaflet.marker([38.290014, 21.787147],{icon:greenIcon}).addTo(this.map)
     // .bindPopup("Type"+ "marker.type");
 
-    this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data => {
+    const source = timer(100,60000);
+
+    const subscribe = source.subscribe(val => this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data => {
+
+
+    //------> remove old markers before adding the new ones
+    //implement after layers because you remove them using the clearLayer command
+
+
+
+
+
+    // this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data => {
       // console.log(data);
       // data.foreach(async function(sensor){
 
       // })
-
+      
       var size = Object.keys(data).length;
 
       // console.log(data[0].location.latitude)
-      console.log(data[0].status)
+      // console.log(data[0].status)
       // Object.entries(data).forEach(
       //   // ([key, value]) => console.log(key, value)
       //   Leaflet.marker([38.290014, 21.787147],{icon:greenIcon}).addTo(this.map)
@@ -144,7 +159,7 @@ export class MapPage implements OnInit {
       }
 
 
-    });
+    }))
   }
 
 

@@ -16,12 +16,12 @@ export class ContactPage implements OnInit {
   ngOnInit() { }
 
 
-  placeNTime: string;
+  place: string;
   Report: string;
 
   sendReport() {
     // console.log(localStorage.getItem("token"));
-    var body = {token:localStorage.getItem("token"),placeNTime: this.placeNTime,issue: this.Report};
+    var body = {token:localStorage.getItem("token"),place: this.place,issue: this.Report};
     this.http.post("http://127.0.0.1:8080/api/reports",body).subscribe(data =>{
       
       // this.router.navigate(["./login"]);
