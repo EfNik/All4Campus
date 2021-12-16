@@ -27,6 +27,7 @@ export class ContactPage implements OnInit {
       // console.log(data);
       // this.redirectToHome();
 
+
       var size = Object.keys(data).length;
       for (let i = 0; i < size; i++) {
         this.reports.push({'place' : data[i].place, 'issue' : data[i].issue})
