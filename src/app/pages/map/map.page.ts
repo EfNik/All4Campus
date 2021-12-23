@@ -174,8 +174,10 @@ import { Map, tileLayer, marker, polyline } from 'leaflet';
 import * as Leaflet from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import { HttpClient } from '@angular/common/http';
-
+import { HttpHeaders } from '@angular/common/http';
 import { timer } from 'rxjs';
+import { EorRimageGetService } from 'src/app/eor-rimage-get.service';
+import { saveAs} from 'file-saver';
 
 // import * as internal from 'stream';
 
@@ -193,6 +195,7 @@ export class MapPage implements OnInit {
   latlong = [];
   properties = [];
   status;
+  fileName = 'testImage.png';
 
 
   ngOnInit() { }
@@ -207,7 +210,8 @@ export class MapPage implements OnInit {
   constructor(
 
     private geolocation: Geolocation,
-    public http: HttpClient
+    public http: HttpClient,
+    private EorRi : EorRimageGetService
   ) { }
 
   ionViewDidEnter() {
@@ -216,8 +220,8 @@ export class MapPage implements OnInit {
     this.map = new Leaflet.Map('mapId').setView([38.290014, 21.787147], 15);
     Leaflet.tileLayer('https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=4MmzHCgC720WufGIKa3v').addTo(this.map);
 
-
-
+    // this.downloadImage2();
+    this.downloadFile();
     //   //   //akolouthoun ta 3 diaforetika icons prasino,kitrino,kokkino 
 
     var greenIcon = new Leaflet.Icon({
@@ -244,18 +248,32 @@ export class MapPage implements OnInit {
 
     //normal timer
     // const source = timer(100, 60000);
+    // const source2 = timer(60099,59999);
 
     //test timer
-    const source = timer(100, 10000);
+    const source = timer(100, 10000000000);
+    const source2 = timer(10099,9999);
 
+    // marker.on('click', function(e) {
+    //   marker.setIcon("adasd");
+    // });
+    // let test = 4;
+    let rem=0;
     const subscribe = source.subscribe(val => this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data => {
-
-
+      
+    
+      // source2.subscribe(val => legendControl.remove())
+      // if(rem==1)
+      // {
+      //   legendControl.remove()
+      // }
+      
+      // console.log(test);
       //remove previous layer menu
       //try1 
       // try{
-      //   Leaflet.control.eachLayer(function (layer) {
-      //     Leaflet.control.removeLayer(layer);
+      //   legendControl.eachLayer(function (layer) {
+      //     legendControl.removeLayer(layer);
       //   });
       // }
       // catch(error)
@@ -290,6 +308,18 @@ export class MapPage implements OnInit {
 
       // Leaflet.removeControl();
 
+
+      //try 5 
+      // try{
+      //   legendControl.remove();
+      // }
+      // catch(error)
+      // {
+      //   console.log(error);
+        
+      // }
+      
+
       //------> remove old markers before adding the new ones
       //implement after layers because you remove them using the clearLayer command
 
@@ -307,16 +337,27 @@ export class MapPage implements OnInit {
         if (data[i].type == "r") {
 
           if (data[i].status == "green") {
-            var ramp1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("Type" + "marker.type")
+            var ramp1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp1.bindPopup("<img src=" + "/assets/images/logo5.png"+ "/>"); });
             ramps.push(ramp1);
 
           }
           else if (data[i].status == "yellow") {
-            var ramp2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("Type" + "marker.type")
+            var ramp2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("id: " + data[i].id)
+            .on('click',console.log("-----------------------------------------"));
+            // .on('click',this.downloadImage(ramp2))
+            // .on('click', file => this.downloadFile(file))
+            // .on('click', function() {
+            //   this.http.post("http://127.0.0.1:8080/api/getImage").subscribe(data => {
+
+            //     ramp1.bindPopup("<img src=" + data+ "/>"); 
+            //   }); 
+              
+            
+            // });
             ramps.push(ramp2);
           }
           else if (data[i].status == "red") {
-            var ramp3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("Type" + "marker.type")
+            var ramp3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("id: " + data[i].id)
             ramps.push(ramp3);
           }
         }
@@ -325,16 +366,17 @@ export class MapPage implements OnInit {
         else if (data[i].type == "e") {
           
           if (data[i].status == "green") {
-            var elev1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("Type" + "marker.type")
+            var elev1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("id: " + data[i].id+ data[i].id)
             elevators.push(elev1);
 
           }
           else if (data[i].status == "yellow") {
-            var elev2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("Type" + "marker.type")
+            var elev2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("id: " + data[i].id+ data[i].id)
             elevators.push(elev2);
           }
           else if (data[i].status == "red") {
-            var elev3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("Type" + "marker.type")
+            var elev3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("id: " + data[i].id+ data[i].id)
+            //+"<img src=" + "/assets/images/logo5.png"+ "/>"
             elevators.push(elev3);
           }
         }
@@ -359,18 +401,52 @@ export class MapPage implements OnInit {
       };
 
       //step3 with also adding to the map
-      Leaflet.control.layers(0, overlays).addTo(this.map);
+      var legendControl = Leaflet.control.layers(0, overlays);
+      legendControl.addTo(this.map);
 
-      
-
+      rem =1;
+      // legendControl.remove();
       // Leaflet.control._update();
-
-  
-
+      
     })
+    
     )
+    
   }
 
+
+  returnBlob(res) : Blob {
+    return new Blob([res], {type: 'image/png'});
+  }
+
+  downloadImage(marker){
+    this.EorRi.downloadFile(this.fileName).subscribe( res => {
+      if(res){
+        const url = window.URL.createObjectURL(this.returnBlob(res))
+        marker.bindPopup("<img src=" +url+ "/>");
+      }
+    })
+  }
+
+  downloadImage2(){
+    console.log("-----342342-------------------------")
+    this.EorRi.downloadFile(this.fileName).subscribe( res => {
+      if(res){
+        saveAs(this.returnBlob(res),this.fileName);
+      }
+    })
+  }
+
+
+  downloadFile(){
+    this.EorRi.downloadFile({'filename': this.fileName}).subscribe(
+      (data) => {
+        if(data && data != undefined && data != null){
+          saveAs(data,this.fileName);
+        }
+      }
+    )
+  }
 
 
 }
