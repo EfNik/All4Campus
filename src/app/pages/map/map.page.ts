@@ -251,7 +251,7 @@ export class MapPage implements OnInit {
     // const source2 = timer(60099,59999);
 
     //test timer
-    const source = timer(100, 10000000000);
+    const source = timer(100, 10000);
     const source2 = timer(10099,9999);
 
     // marker.on('click', function(e) {
@@ -262,7 +262,7 @@ export class MapPage implements OnInit {
     const subscribe = source.subscribe(val => this.http.get("http://127.0.0.1:8080/api/loadmap").subscribe(data => {
       
     
-      // source2.subscribe(val => legendControl.remove())
+      source2.subscribe(val => legendControl.remove())
       // if(rem==1)
       // {
       //   legendControl.remove()
