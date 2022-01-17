@@ -40,7 +40,8 @@ export class SignupPage implements OnInit {
       lastname: this.Lastname
     };
 
-    this.http.post("http://127.0.0.1:8080/api/signup",body).subscribe(data =>{
+    this.http.post("http://127.0.0.1:80/api/signup",body).subscribe(data =>{
+    // this.http.post("http://44.201.231.57/api/signup",body).subscribe(data =>{
       console.log(data);
       let status = data[Object.keys(data)[0]];
      

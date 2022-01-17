@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
 
 
   sendData(){
-    // console.log(this.Email,this.Password)
+    // console.log(this.Email,this.Password) 
     let headers = new Headers();
     headers.append('Content-Type','application/json');
 
@@ -40,9 +40,11 @@ export class LoginPage implements OnInit {
     // this.http.post("http://192.168.1.2:8080/api/login",body).subscribe(data =>{
     //   console.log(data);
     // });
-    this.http.post("http://127.0.0.1:8080/api/login",body).subscribe(data =>{
+    // this.http.post("http://127.0.0.1:80/api/login",body).subscribe(data =>{
+    this.http.post("http://44.201.231.57/api/login",body).subscribe(data =>{
+    // this.http.post("http://192.168.1.4:8080/api/test",body).subscribe(data =>{  
       let status = data[Object.keys(data)[0]];
-     
+      console.log(data);
       // console.log(data[Object.keys(data)[0]]);
       // console.log(status)
       // if(status=="success")

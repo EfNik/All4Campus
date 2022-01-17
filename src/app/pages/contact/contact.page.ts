@@ -22,6 +22,7 @@ export class ContactPage implements OnInit {
     var body = { token: localStorage.getItem("token"), place: this.place, issue: this.Report };
     // console.log("_------------------------------------")
     this.http.post("http://127.0.0.1:8080/api/getReports", body).subscribe(data => {
+      // this.http.post("http://44.201.231.57/api/getReports", body).subscribe(data => {     
 
       // this.router.navigate(["./login"]);
       // console.log(data);
