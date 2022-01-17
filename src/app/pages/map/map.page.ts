@@ -224,10 +224,17 @@ export class MapPage implements OnInit {
     // this.downloadFile();
     //   //   //akolouthoun ta 3 diaforetika icons prasino,kitrino,kokkino 
 
+    // var greenIcon = new Leaflet.Icon({
+    //   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    //   iconSize: [10, 21],
+    //   iconAnchor: [12, 41],
+    //   popupAnchor: [1, -34],
+    //   // shadowSize: [41, 41]
+    // });
     var greenIcon = new Leaflet.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
       iconSize: [10, 21],
-      iconAnchor: [12, 41],
+      iconAnchor: [10, 21],
       popupAnchor: [1, -34],
       // shadowSize: [41, 41]
     });
@@ -336,16 +343,17 @@ export class MapPage implements OnInit {
       for (let i = 0; i < size; i++) {
         if (data[i].type == "r") {
 
-          if (data[i].status == "green") {
+          if (data[i].status == "green") { 
             // var ramp1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp1.bindPopup("<img src=" + "/assets/images/logo5.png"+ "/>"); });
-            var ramp1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp1.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
+            let ramp1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp1.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">");});
+            // var ramp1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).on('click', function() {ramp1.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
             ramps.push(ramp1);
 
           }
           else if (data[i].status == "yellow") {
             // var ramp2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("id: " + data[i].id)
             // .on('click',console.log("-----------------------------------------"));
-            var ramp2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp2.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
+            let ramp2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp2.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
             // .on('click',this.downloadImage(ramp2))
             // .on('click', file => this.downloadFile(file))
             // .on('click', function() {
@@ -359,7 +367,7 @@ export class MapPage implements OnInit {
             ramps.push(ramp2);
           }
           else if (data[i].status == "red") {
-            var ramp3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp3.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
+            let ramp3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("id: " + data[i].id).on('click', function() {ramp3.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
             ramps.push(ramp3);
           }
         }
@@ -368,23 +376,24 @@ export class MapPage implements OnInit {
         else if (data[i].type == "e") {
           
           if (data[i].status == "green") {
-            var elev1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("id: " + data[i].id).on('click', function() {elev1.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
+            let elev1 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: greenIcon }).bindPopup("id: " + data[i].id).on('click', function() {elev1.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
             elevators.push(elev1);
 
           }
           else if (data[i].status == "yellow") {
-            var elev2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("id: " + data[i].id).on('click', function() {elev2.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
+            let elev2 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: yellowIcon }).bindPopup("id: " + data[i].id).on('click', function() {elev2.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
             elevators.push(elev2);
           }
           else if (data[i].status == "red") {
-            var elev3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("id: " + data[i].id).on('click', function() {elev3.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
+            let elev3 = Leaflet.marker([data[i].location.longitude, data[i].location.latitude], { icon: redIcon }).bindPopup("id: " + data[i].id).on('click', function() {elev3.bindPopup("<img src=" + "http://127.0.0.1:8080/api/image_issue?bug_id="+data[i].id+ ">"); });
             //+"<img src=" + "/assets/images/logo5.png"+ "/>"
             elevators.push(elev3);
           }
         }
+        
 
       }
-
+      console.log(ramps)
       // this.map.eachLayer(function (layer) {
       //   // this.map.removeLayer(layer);
       //   console.log(layer);
@@ -396,6 +405,7 @@ export class MapPage implements OnInit {
       var rampes = Leaflet.layerGroup(ramps);
       var elevs = Leaflet.layerGroup(elevators);
 
+      
       //step2
       var overlays = {
         "Ramps": rampes,
