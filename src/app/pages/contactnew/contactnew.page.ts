@@ -21,14 +21,14 @@ export class ContactnewPage implements OnInit {
   Report: string;
 
   sendReport() {
-    // console.log(localStorage.getItem("token"));
+    
     var body = {token:localStorage.getItem("token"),place: this.place,issue: this.Report};
-    this.http.post("http://127.0.0.1:8080/api/reports",body).subscribe(data =>{
-    // this.http.post("http://44.201.231.57/api/reports",body).subscribe(data =>{
+    // this.http.post("http://127.0.0.1:8080/api/reports",body).subscribe(data =>{
+    this.http.post("http://44.201.231.57/api/reports",body).subscribe(data =>{
       
-      // this.router.navigate(["./login"]);
+     
       console.log(data);
-      // this.redirectToHome();
+
       alert("Thank you for reporting an issue!");
       window.location.reload();
       
@@ -36,25 +36,5 @@ export class ContactnewPage implements OnInit {
     });
   }
 
-  // redirectToHome(){
-    
-  //   this.router.navigate(["/home"]);
-  // }
   
 }
-
-// import { Component, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-contactnew',
-//   templateUrl: './contactnew.page.html',
-//   styleUrls: ['./contactnew.page.scss'],
-// })
-// export class ContactnewPage implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit() {
-//   }
-
-// }

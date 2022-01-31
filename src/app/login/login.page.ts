@@ -27,26 +27,12 @@ export class LoginPage implements OnInit {
       password: this.Password
     };
 
+    // this.http.post("http://127.0.0.1:8080/api/login",body).subscribe(data =>{
     this.http.post("http://44.201.231.57/api/login",body).subscribe(data =>{
       console.log(data);
     });
     
   }
   
-
-  // sendTestData(){
-  //   let headers = new Headers();
-  //   headers.append('Content-Type','application/json');
-
-  //   let body = {
-  //     message : "Can you hear me?"
-  //   };
-
-  //   this.http.post("http://192.168.1.2:8080/api/test",body).subscribe(data =>{
-  //     console.log(data);
-  //   });
-    
-  // }
-
 }
 

@@ -40,16 +40,16 @@ export class SignupPage implements OnInit {
       lastname: this.Lastname
     };
 
-    this.http.post("http://127.0.0.1:80/api/signup",body).subscribe(data =>{
-    // this.http.post("http://44.201.231.57/api/signup",body).subscribe(data =>{
+    // this.http.post("http://127.0.0.1:80/api/signup",body).subscribe(data =>{
+    this.http.post("http://44.201.231.57/api/signup",body).subscribe(data =>{
       console.log(data);
       let status = data[Object.keys(data)[0]];
      
-      // console.log(data[Object.keys(data)[0]]);
+
       console.log(data)
       if(status=="success")
       {
-        // console.log("great")
+
         this.router.navigate(["../login"]);
       }
       else{
@@ -66,22 +66,5 @@ export class SignupPage implements OnInit {
       }
     });
   }
-
-  // sendRegistration(){
-
-  //   let headers = new Headers();
-  //   headers.append('Content-Type','application/json');
-
-  //   let body = {
-  //     email: this.Email,
-  //     password: this.Password,
-  //     fistname: this.Firstname,
-  //     lastname: this.Lastname
-  //   };
-
-  //   this.http.post("http://192.168.1.2:8080/api/signup",body).subscribe(data =>{
-  //     console.log(data);
-  //   });
-  // }
 
 }

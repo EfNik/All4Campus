@@ -18,25 +18,16 @@ export class ContactPage implements OnInit {
   }
 
   ngOnInit() {
-    // console.log(localStorage.getItem("token"));
     var body = { token: localStorage.getItem("token"), place: this.place, issue: this.Report };
-    // console.log("_------------------------------------")
-    this.http.post("http://127.0.0.1:8080/api/getReports", body).subscribe(data => {
-      // this.http.post("http://44.201.231.57/api/getReports", body).subscribe(data => {     
 
-      // this.router.navigate(["./login"]);
-      // console.log(data);
-      // this.redirectToHome();
+    // this.http.post("http://127.0.0.1:8080/api/getReports", body).subscribe(data => {
+      this.http.post("http://44.201.231.57/api/getReports", body).subscribe(data => {     
 
 
       var size = Object.keys(data).length;
       for (let i = 0; i < size; i++) {
         this.reports.push({'place' : data[i].place, 'issue' : data[i].issue})
-        // this.contact(reqParams)
-        // .then(data => {
-        //     this.myJobs = data['jobs'];
-        // });
-        // this.place = "data[i].place";
+
       }
       console.log(this.reports)
     });
@@ -52,10 +43,6 @@ export class ContactPage implements OnInit {
 
 
 
-  // redirectToHome(){
-
-  //   this.router.navigate(["/home"]);
-  // }
 
 }
 
