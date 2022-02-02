@@ -29,7 +29,7 @@ export class ContactPage implements OnInit {
         this.reports.push({'place' : data[i].place, 'issue' : data[i].issue})
 
       }
-      console.log(this.reports)
+      // console.log(this.reports)
     });
   }
 
